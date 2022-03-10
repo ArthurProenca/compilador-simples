@@ -3,5 +3,5 @@ simples : estrut.c lexico.l sintatico.y;\
 		bison -o sintatico.c sintatico.y -v -d;\
 		gcc sintatico.c -o simples
 
-limpa	:	;\
+limpa	: ;\
 	rm lexico.c sintatico.c sintatico.output *~ sintatico.h simples\

@@ -1,0 +1,15 @@
+programa testavetor
+    inteiro vetor[4]
+    inteiro i
+inicio
+    i <- 0
+    enquanto i < 4 faca
+        vetor[i] <- (i+1) * 10
+        i <- i + 1
+    fimenquanto
+    i <- 4
+    enquanto nao (i < 1) faca
+        escreva vetor[4-i]
+        i <- i - 1
+    fimenquanto
+fimprograma
