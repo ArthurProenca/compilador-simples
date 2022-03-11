@@ -1,20 +1,19 @@
 	INPP
-	AMEM	x
+	AMEM	2
 	LEIA
-	ARZG	x
-Lx	NADA
-	CRVG	x
-	CRCT	x
+	ARZG	0
+	LEIA
+	ARZG	1
+	CRVG	0
+	CRVG	1
 	CMMA
-	DSVF	Ly
-	CRVG	x
+	DSVF	L1
+	CRVG	0
 	ESCR
-	CRVG	x
-	CRCT	x
-	SUBT
-	ARZG	x
-	DSVS	Lx
-Ly	NADA
-	DMEM	x
-	FIMP	x
-Programa ok!
+	DSVS	L2
+L1	NADA
+	CRVG	1
+	ESCR
+L2	NADA
+	DMEM	2
+	FIMP

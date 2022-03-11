@@ -1,9 +1,10 @@
-programa teste1
-  inteiro a
+programa compara
+  inteiro a b
 inicio
   leia a
-  enquanto a > 0 faca 
-    escreva a
-    a <- a - 1
-  fimenquanto
+  leia b
+  se a > b
+    entao escreva a
+    senao escreva b
+  fimse
 fimprograma

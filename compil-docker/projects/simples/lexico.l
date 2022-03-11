@@ -1,6 +1,7 @@
 %{
 #include "sintatico.h"
 void erro (char * s);
+char atomo[100];
 %}
 
 identificador [a-zA-Z][a-zA-Z0-9]*
@@ -55,8 +56,8 @@ nao               return T_NAO;
 "("               return T_ABRE;
 ")"               return T_FECHA;
 
-{identificador}   return T_IDENTIF;
-{numero}          return T_NUMERO;
+{identificador}   { strcpy(atomo, yytext); return T_IDENTIF; }
+{numero}          { strcpy(atomo, yytext); return T_NUMERO;  }
 {espaco}          ;
 {novalinha}       nlinha++;
 "//".*            ; /* nao faz nada */
