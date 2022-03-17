@@ -1,0 +1,17 @@
+/*
+  oi programa
+*/
+programa compara
+  inteiro a b
+  logico x d //ejita
+  inteiro z
+inicio
+  leia b
+  a <- 10
+  b <- b + 10
+  escreva b
+  enquanto a < 1 faca
+    escreva a
+    a <- a - 1
+  fimenquanto
+fimprograma
