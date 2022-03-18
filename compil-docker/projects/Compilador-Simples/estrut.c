@@ -11,6 +11,8 @@ struct elem_tab_simbolos
     char id[100];
     int endereco;
     char tipo;
+    int tamanho;
+    char cat;
 } TabSimb[TAM_TAB], elem_tab;
 int pos_tab;
 
@@ -54,19 +56,19 @@ void mostra_tabela()
 {
     int i;
     puts("Tabela de Simbolos");
-    printf("\n%3s | %30s  | %s | %s\n", "#", "ID", "END", "TIP");
-    for (int i = 0; i < 50; i++)
+    printf("\n%3s | %30s  | %s | %s | %s | %s\n", "#", "ID", "END", "TIP", "CAT", "TAM");
+    for (int i = 0; i < 62; i++)
         printf("-");
     for (int i = 0; i < pos_tab; i++)
     {
         // printf("\n%3d | %30s  | %3d | %3c\n", i, TabSimb[i].id, TabSimb[i].endereco, TabSimb[i].tipo);
         if (TabSimb[i].tipo < 108)
         {
-            printf("\n%3d | %30s  | %3d | %s\n", i, TabSimb[i].id, TabSimb[i].endereco, "INT");
+            printf("\n%3d | %30s  | %3d | %s | %3c | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "INT", TabSimb[i].cat, TabSimb[i].tamanho);
         }
         else
         {
-            printf("\n%3d | %30s  | %3d | %s\n", i, TabSimb[i].id, TabSimb[i].endereco, "LOG");
+            printf("\n%3d | %30s  | %3d | %s | %3c | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "LOG", TabSimb[i].cat, TabSimb[i].tamanho);
         }
     }
     puts("\n");

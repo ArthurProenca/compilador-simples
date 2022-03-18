@@ -11,6 +11,8 @@ int yyerror(char *s);
 int conta = 0;
 int rotulo = 0;
 char tipo;
+int tamanho;
+char categoria;
 %}
 
 %start programa
@@ -34,6 +36,8 @@ char tipo;
 
 %token T_INTEIRO
 %token T_LOGICO
+%token T_V_INTEIRO
+%token T_V_LOGICO
 %token T_V
 %token T_F
  
@@ -88,8 +92,8 @@ char tipo;
         | tipo lista_variaveis
         ;
     tipo
-        : T_INTEIRO { tipo = 'i';   }
-        | T_LOGICO  { tipo = 'l';   }
+        : T_INTEIRO { tipo = 'i', tamanho = 1, categoria = 'v';}
+        | T_LOGICO  { tipo = 'l', tamanho = 1, categoria = 'v';}
         ;
     lista_variaveis
         : lista_variaveis T_IDENTIF
@@ -97,6 +101,8 @@ char tipo;
                 strcpy(elem_tab.id, atomo);
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
+                elem_tab.tamanho = tamanho;
+                elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
         | T_IDENTIF
@@ -104,6 +110,8 @@ char tipo;
                 strcpy(elem_tab.id, atomo);
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
+                elem_tab.tamanho = tamanho;
+                elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
         ;
