@@ -1,0 +1,10 @@
+programa nome
+  inteiro a b
+  logico c d
+inicio
+  leia a
+  repita
+     escreva a
+     a <- a - 1
+  ate a < 0 fimrepita
+fimprograma

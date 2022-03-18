@@ -163,9 +163,6 @@ char tipo;
     repita
         : T_REPITA
             { 
-                char t = desempilha();
-                if(t != 'l')
-                    erro("Incompatibilidade de tipos!");
                 rotulo++;
                 fprintf(yyout, "L%d\tNADA\n", rotulo);
                 empilha(rotulo);     
@@ -178,6 +175,9 @@ char tipo;
             }
         expr T_FIMREPITA
             { 
+                char t = desempilha();
+                if(t != 'l')
+                    erro("Incompatibilidade de tipos!");
                 int r1 = desempilha();
                 int r2 = desempilha();
                 fprintf(yyout, "\tDSVS\tL%d\n", r2);   

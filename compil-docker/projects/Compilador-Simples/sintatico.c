@@ -546,7 +546,7 @@ static const yytype_int16 yyrline[] =
 {
        0,    67,    67,    66,    79,    83,    84,    87,    88,    91,
       92,    95,   102,   111,   112,   115,   116,   117,   118,   119,
-     120,   123,   133,   141,   147,   140,   165,   174,   164,   189,
+     120,   123,   133,   141,   147,   140,   165,   171,   164,   189,
      198,   188,   213,   212,   230,   239,   248,   257,   266,   275,
      284,   293,   302,   311,   314,   322,   327,   332,   337,   345
 };
@@ -1528,29 +1528,29 @@ yyreduce:
   case 26:
 #line 165 "sintatico.y"
             { 
-                char t = desempilha();
-                if(t != 'l')
-                    erro("Incompatibilidade de tipos!");
                 rotulo++;
                 fprintf(yyout, "L%d\tNADA\n", rotulo);
                 empilha(rotulo);     
             }
-#line 1539 "sintatico.c"
+#line 1536 "sintatico.c"
     break;
 
   case 27:
-#line 174 "sintatico.y"
+#line 171 "sintatico.y"
             { 
                 rotulo++;
                 fprintf(yyout, "\tDSVF\tL%d\n", rotulo);  
                 empilha(rotulo);
             }
-#line 1549 "sintatico.c"
+#line 1546 "sintatico.c"
     break;
 
   case 28:
-#line 180 "sintatico.y"
+#line 177 "sintatico.y"
             { 
+                char t = desempilha();
+                if(t != 'l')
+                    erro("Incompatibilidade de tipos!");
                 int r1 = desempilha();
                 int r2 = desempilha();
                 fprintf(yyout, "\tDSVS\tL%d\n", r2);   
