@@ -1,10 +1,9 @@
 programa nome
-  inteiro a b
+  inteiro a b ad[1]
   logico c d
 inicio
   leia a
   repita
      escreva a
-     a <- a - 1
   ate a < 0 fimrepita
 fimprograma

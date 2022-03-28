@@ -36,8 +36,6 @@ char categoria;
 
 %token T_INTEIRO
 %token T_LOGICO
-%token T_V_INTEIRO
-%token T_V_LOGICO
 %token T_V
 %token T_F
  
@@ -58,6 +56,8 @@ char categoria;
 
 %token T_IDENTIF
 %token T_NUMERO
+
+%token T_VETOR
 
 %left T_E T_OU
 %left T_IGUAL
@@ -101,7 +101,7 @@ char categoria;
                 strcpy(elem_tab.id, atomo);
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho = tamanho;
+                elem_tab.tamanho = conta + tamanho;
                 elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
@@ -110,7 +110,7 @@ char categoria;
                 strcpy(elem_tab.id, atomo);
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho = tamanho;
+                elem_tab.tamanho = conta + tamanho;
                 elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
@@ -330,6 +330,11 @@ char categoria;
         | T_NUMERO
             { 
                 fprintf(yyout, "\tCRCT\t%s\n", atomo);    
+                empilha('i');
+            }
+        | T_VETOR
+            {
+                fprintf(yyout, "\tCRVV\t%s\n", atomo);
                 empilha('i');
             }
         | T_V
