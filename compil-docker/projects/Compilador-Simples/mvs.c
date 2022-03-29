@@ -1,15 +1,15 @@
 /*--------------------------------------------------------
- *      Simulador da Maquina Virtual Simples (MVS)               
- *      Por Luiz Eduardo da Silva                
+ *      Simulador da Maquina Virtual Simples (MVS)
+ *      Por Luiz Eduardo da Silva
  *--------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 /*--------------------------------------------------------
- * Conjunto de instrucoes mnemonicas da MVS                    
+ * Conjunto de instrucoes mnemonicas da MVS
  *--------------------------------------------------------*/
-#define TOTALINST 31
+#define TOTALINST 33
 char *inst[TOTALINST] = {
     "CRVG", /* Carrega valor */
     "CRCT", /* Carrega constante */
@@ -41,7 +41,9 @@ char *inst[TOTALINST] = {
     "ENSP", /* Entrada Sub-Programa */
     "RTSP", /* Retorno Sub-Programa */
     "DMEM", /* Desaloca memoria */
-    "FIMP"  /* Fim do programa */
+    "FIMP", /* Fim do programa */
+    "ARZV", /* Armazena em vetor */
+    "CRVV"  /* Carrega valor de vetor */
 };
 
 enum codinst
@@ -76,11 +78,13 @@ enum codinst
     ENSP,
     RTSP,
     DMEM,
-    FIMP
+    FIMP,
+    ARZV,
+    CRVV
 };
 
 /*--------------------------------------------------------
- * Regioes do ambiente de execucao da MVS                    
+ * Regioes do ambiente de execucao da MVS
  *--------------------------------------------------------*/
 struct prog
 {
@@ -92,7 +96,7 @@ int
     M[500]; /* Pilha M - Dados do programa */
 
 /*--------------------------------------------------------
- * Rotinas da MVS                   
+ * Rotinas da MVS
  *--------------------------------------------------------*/
 int busca_instrucao(char *);
 int carrega_programa(char *, int *);
@@ -101,7 +105,7 @@ void executa_programa(int);
 
 /*--------------------------------------------------------
  * Funcao principal.
- * Carrega o codigo passado em linha de comando e executa          
+ * Carrega o codigo passado em linha de comando e executa
  *--------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
@@ -149,18 +153,22 @@ int busca_instrucao(char *s)
     return i;
 }
 
-void instrucao (char *linha, int *rot, int *inst, int *op) {
+void instrucao(char *linha, int *rot, int *inst, int *op)
+{
     char str[6];
     int i;
     //---- rotulo
-    if (*linha == 'L') {
+    if (*linha == 'L')
+    {
         i = 0;
         linha++;
         while (*linha != '\t')
-           str[i++] = *linha++;
+            str[i++] = *linha++;
         str[i] = 0;
-        *rot = atoi (str);
-    } else *rot = -1;
+        *rot = atoi(str);
+    }
+    else
+        *rot = -1;
     //---- instrucao
     linha++;
     i = 0;
@@ -169,23 +177,25 @@ void instrucao (char *linha, int *rot, int *inst, int *op) {
     str[i] = 0;
     *inst = busca_instrucao(str);
     //---- operando
-    if (*linha == '\t') {
+    if (*linha == '\t')
+    {
         linha++;
         if (*linha == 'L')
-           linha++;
+            linha++;
         i = 0;
         while (*linha != '\r' && *linha != '\n')
-          str[i++] = *linha++;
+            str[i++] = *linha++;
         str[i] = 0;
-        *op = atoi (str);
+        *op = atoi(str);
     }
-    else *op = -1;
+    else
+        *op = -1;
 }
 
 /*--------------------------------------------------------
- * Carrega o programa MVS. 
+ * Carrega o programa MVS.
  * Recebe o nome do arquivo com o programa para MVS e
- * retorna o numero de linhas do programa. 
+ * retorna o numero de linhas do programa.
  *--------------------------------------------------------*/
 int carrega_programa(char *s, int *nro)
 {
@@ -203,14 +213,15 @@ int carrega_programa(char *s, int *nro)
     {
         int rot, inst, op;
         fgets(linha, 20, arq);
-        if (!feof(arq)) {
-           instrucao (linha, &rot, &inst, &op);
-           P[*nro].r = rot;
-           if (rot != -1)
-              L[rot] = *nro;
-           P[*nro].i = inst;
-           P[*nro].o = op;
-           (*nro)++; // proxima instrucao
+        if (!feof(arq))
+        {
+            instrucao(linha, &rot, &inst, &op);
+            P[*nro].r = rot;
+            if (rot != -1)
+                L[rot] = *nro;
+            P[*nro].i = inst;
+            P[*nro].o = op;
+            (*nro)++; // proxima instrucao
         }
     }
     fclose(arq);
@@ -238,7 +249,7 @@ void mostra_programa(int nro)
 /*--------------------------------------------------------
  * Funcao que executa o programa MVS
  * A partir do vetor P (programa) preenchido, executa uma
- * a uma as instrucoes do programa.                      
+ * a uma as instrucoes do programa.
  *--------------------------------------------------------*/
 void executa_programa(int debug)
 {
@@ -426,6 +437,15 @@ void executa_programa(int debug)
         }
         case DMEM:
             s = s - P[i].o;
+            i++;
+            break;
+        case ARZV:
+            M[P[i].o + M[s - 1]] = M[s];
+            s = s - 2;
+            i++;
+            break;
+        case CRVV:
+            M[s] = M[P[i].o + M[s]];
             i++;
             break;
         default:

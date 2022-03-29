@@ -1,9 +1,6 @@
 programa nome
-  inteiro a b ad[1]
-  logico c d
+  inteiro x vetor[10] ab 
+  logico nevisu[12]
 inicio
-  leia a
-  repita
-     escreva a
-  ate a < 0 fimrepita
+
 fimprograma

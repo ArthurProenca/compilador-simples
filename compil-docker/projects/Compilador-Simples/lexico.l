@@ -53,6 +53,8 @@ nao               return T_NAO;
 "<-"              return T_ATRIB;
 "("               return T_ABRE;
 ")"               return T_FECHA;
+"["               return T_INICIO_VETOR;
+"]"               return T_FIM_VETOR;
 
 {identificador}   { strcpy(atomo, yytext); return T_IDENTIF; }
 {numero}          { strcpy(atomo, yytext); return T_NUMERO;  }

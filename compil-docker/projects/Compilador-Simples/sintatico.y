@@ -57,7 +57,8 @@ char categoria;
 %token T_IDENTIF
 %token T_NUMERO
 
-%token T_VETOR
+%token T_INICIO_VETOR
+%token T_FIM_VETOR
 
 %left T_E T_OU
 %left T_IGUAL
@@ -91,29 +92,42 @@ char categoria;
         : tipo lista_variaveis declaracao_variaveis
         | tipo lista_variaveis
         ;
+
     tipo
-        : T_INTEIRO { tipo = 'i', tamanho = 1, categoria = 'v';}
-        | T_LOGICO  { tipo = 'l', tamanho = 1, categoria = 'v';}
+        : T_INTEIRO                                       { tipo = 'i', tamanho = 1, categoria = 'v';}
+        | T_LOGICO                                        { tipo = 'l', tamanho = 1, categoria = 'v';}
         ;
     lista_variaveis
-        : lista_variaveis T_IDENTIF
-            {
+        : lista_variaveis variavel
+        | variavel
+        ;
+
+    variavel
+        :   
+        | T_IDENTIF 
+            { 
                 strcpy(elem_tab.id, atomo);
+            }
+            tamanho
+        ;
+    tamanho
+        :
+            {
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho = conta + tamanho;
+                elem_tab.tamanho =  tamanho;
                 elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
-        | T_IDENTIF
+        | T_INICIO_VETOR T_NUMERO
             {
-                strcpy(elem_tab.id, atomo);
                 elem_tab.endereco = conta++;
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho = conta + tamanho;
+                elem_tab.tamanho =  tamanho;
                 elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
-            }
+            } 
+        T_FIM_VETOR
         ;
     lista_comandos
         :
@@ -139,10 +153,10 @@ char categoria;
         ;
     escrita
         : T_ESCREVA expr
-           { 
+            { 
                desempilha();
                fprintf(yyout, "\tESCR\n");       
-           }
+            }
         ;
     repeticao
         : T_ENQTO
@@ -330,11 +344,6 @@ char categoria;
         | T_NUMERO
             { 
                 fprintf(yyout, "\tCRCT\t%s\n", atomo);    
-                empilha('i');
-            }
-        | T_VETOR
-            {
-                fprintf(yyout, "\tCRVV\t%s\n", atomo);
                 empilha('i');
             }
         | T_V
