@@ -1,6 +1,11 @@
 programa nome
-  inteiro x vetor[10] ab 
-  logico nevisu[12]
+  inteiro x vetor[10] ab xs 
+  logico dodora[10]
 inicio
-
+  ab <- 3
+  x <- 7
+  escreva ab
+  escreva x
+  xs <- 12
+  vetor[1] <- 12
 fimprograma

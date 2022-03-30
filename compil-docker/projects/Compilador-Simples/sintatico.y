@@ -94,8 +94,8 @@ char categoria;
         ;
 
     tipo
-        : T_INTEIRO                                       { tipo = 'i', tamanho = 1, categoria = 'v';}
-        | T_LOGICO                                        { tipo = 'l', tamanho = 1, categoria = 'v';}
+        : T_INTEIRO { tipo = 'i', tamanho = 1, categoria = 'v';}
+        | T_LOGICO  { tipo = 'l', tamanho = 1, categoria = 'v';}
         ;
     lista_variaveis
         : lista_variaveis variavel
@@ -103,8 +103,7 @@ char categoria;
         ;
 
     variavel
-        :   
-        | T_IDENTIF 
+        :  T_IDENTIF 
             { 
                 strcpy(elem_tab.id, atomo);
             }
@@ -113,18 +112,18 @@ char categoria;
     tamanho
         :
             {
-                elem_tab.endereco = conta++;
+                elem_tab.endereco = conta += tamanho;
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho =  tamanho;
+                elem_tab.tamanho = tamanho;
                 elem_tab.cat = categoria;
                 insere_simbolo(elem_tab);
             }
         | T_INICIO_VETOR T_NUMERO
             {
-                elem_tab.endereco = conta++;
+                elem_tab.endereco = conta += atoi(atomo);
                 elem_tab.tipo = tipo;
-                elem_tab.tamanho =  tamanho;
-                elem_tab.cat = categoria;
+                elem_tab.tamanho =  atoi(atomo);
+                elem_tab.cat = 'a';
                 insere_simbolo(elem_tab);
             } 
         T_FIM_VETOR
@@ -143,14 +142,15 @@ char categoria;
         ;
     leitura
         : T_LEIA T_IDENTIF
-           { 
+            { 
                fprintf(yyout, "\tLEIA\n");
                int pos = busca_simbolo(atomo);
                    if(pos == -1)
                        erro ("Variável não declarada!");       
                fprintf(yyout, "\tARZG\t%d\n", TabSimb[pos].endereco);
-           }
+            }
         ;
+
     escrita
         : T_ESCREVA expr
             { 
@@ -235,19 +235,25 @@ char categoria;
             {    
                 int pos = busca_simbolo(atomo);
                     if(pos == -1)
-                        erro ("Variável não declarada!");       
+                        erro ("Variável não declarada!");     
+                
                 empilha(pos);
             }
-            T_ATRIB expr
+            posicao T_ATRIB expr
             {    
                 char t = desempilha();
                 int p = desempilha();
                 if(t != TabSimb[p].tipo)
                     erro("Incompatibilidade de tipos!");
-        
-                fprintf(yyout, "\tARZG\t%d\n", TabSimb[p].endereco);
-            }
+                
+                if(TabSimb[p].cat == 97) {                   
+                    fprintf(yyout, "\tARZV\t%d\n", TabSimb[p].endereco);
+                } else {
+                    fprintf(yyout, "\tARZG\t%d\n", TabSimb[p].endereco);
+                }
+            }          
         ;
+
     expr
         : expr T_VEZES expr
             { 
@@ -332,13 +338,46 @@ char categoria;
             }
         | termo
         ;
+    indice
+        :   
+            {}
+        | T_INICIO_VETOR expr
+            {
+                printf("a%s", atomo);
+                empilha(atoi(atomo));
+            }
+          T_FIM_VETOR
+        ;
+    posicao
+        : 
+            {}
+        | T_INICIO_VETOR expr
+            {
+                int t = desempilha();
+                int p = desempilha();
+                if(t == 'l') {
+                    erro("Tipo do indice deve ser inteiro");
+                }
+                if(TabSimb[p].cat != 'a') {
+                    erro("Variavel nao e um vetor");
+                }
+                empilha(p);
+            } T_FIM_VETOR
+
     termo
-        : T_IDENTIF
-            { 
+        : T_IDENTIF indice
+            {
+                printf("[%s]", atomo);
                 int pos = busca_simbolo(atomo);
-                    if(pos == -1)
-                        erro ("Variável não declarada!");       
+                    if(pos == -1) { 
+                        printf("[%s]", atomo);
+                        erro ("Variável não declarada!");  
+                    }
+                
+                                   
+                //fprintf(yyout, "\tCRVV\t%d\n", TabSimb[pos].endereco);
                 fprintf(yyout, "\tCRVG\t%d\n", TabSimb[pos].endereco);   
+                
                 empilha(TabSimb[pos].tipo);  
             }
         | T_NUMERO

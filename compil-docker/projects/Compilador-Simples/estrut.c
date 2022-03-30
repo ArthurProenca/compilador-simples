@@ -64,11 +64,11 @@ void mostra_tabela()
         // printf("\n%3d | %30s  | %3d | %3c\n", i, TabSimb[i].id, TabSimb[i].endereco, TabSimb[i].tipo);
         if (TabSimb[i].tipo < 108)
         {
-            printf("\n%3d | %30s  | %3d | %s | %3c | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "INT", TabSimb[i].cat, TabSimb[i].tamanho);
+            printf("\n%3d | %30s  | %3d | %s | %s | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "INT", TabSimb[i].cat == 'a' ? "VET" : "VAR", TabSimb[i].tamanho);
         }
         else
         {
-            printf("\n%3d | %30s  | %3d | %s | %3c | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "LOG", TabSimb[i].cat, TabSimb[i].tamanho);
+            printf("\n%3d | %30s  | %3d | %s | %s | %d\n", i, TabSimb[i].id, TabSimb[i].endereco, "LOG", TabSimb[i].cat == 'a' ? "VET" : "VAR", TabSimb[i].tamanho);
         }
     }
     puts("\n");
