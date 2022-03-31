@@ -1,11 +1,10 @@
-programa nome
-  inteiro x vetor[10] ab xs 
-  logico dodora[10]
+programa teste
+  inteiro x a[5] b
 inicio
-  ab <- 3
-  x <- 7
-  escreva ab
-  escreva x
-  xs <- 12
-  vetor[1] <- 12
+    leia x
+    b <- 777
+    a[0] <- 155
+    a[1] <- 2123
+    escreva a[0]
+    escreva a[1]
 fimprograma

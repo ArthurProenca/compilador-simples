@@ -31,6 +31,13 @@ int desempilha()
     return Pilha[topo--];
 }
 
+int desempilha2()
+{
+    if(topo == -1)
+        erro("Pilha vazia!");
+    return Pilha[topo-=2];
+}
+
 // Rotinas da Tabela de Simbolos
 // Retorna -1 se não encontra o id
 int busca_simbolo(char *id)

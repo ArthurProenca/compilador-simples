@@ -9,6 +9,7 @@
 void erro(char * s);
 int yyerror(char *s);
 int conta = 0;
+int vetor = 0;
 int rotulo = 0;
 char tipo;
 int tamanho;
@@ -120,7 +121,8 @@ char categoria;
             }
         | T_INICIO_VETOR T_NUMERO
             {
-                elem_tab.endereco = conta += atoi(atomo);
+                
+                elem_tab.endereco = conta+=atoi(atomo);
                 elem_tab.tipo = tipo;
                 elem_tab.tamanho =  atoi(atomo);
                 elem_tab.cat = 'a';
@@ -141,14 +143,14 @@ char categoria;
         | atribuicao
         ;
     leitura
-        : T_LEIA T_IDENTIF
+        : T_LEIA T_IDENTIF 
             { 
                fprintf(yyout, "\tLEIA\n");
                int pos = busca_simbolo(atomo);
                    if(pos == -1)
                        erro ("Variável não declarada!");       
                fprintf(yyout, "\tARZG\t%d\n", TabSimb[pos].endereco);
-            }
+            } indice
         ;
 
     escrita
@@ -234,22 +236,25 @@ char categoria;
         : T_IDENTIF
             {    
                 int pos = busca_simbolo(atomo);
+                printf("%i", pos);
                     if(pos == -1)
                         erro ("Variável não declarada!");     
-                
+
                 empilha(pos);
             }
             posicao T_ATRIB expr
             {    
                 char t = desempilha();
                 int p = desempilha();
+                
                 if(t != TabSimb[p].tipo)
                     erro("Incompatibilidade de tipos!");
                 
+
                 if(TabSimb[p].cat == 97) {                   
-                    fprintf(yyout, "\tARZV\t%d\n", TabSimb[p].endereco);
+                    fprintf(yyout, "\tARZV\t%d\n", p);
                 } else {
-                    fprintf(yyout, "\tARZG\t%d\n", TabSimb[p].endereco);
+                    fprintf(yyout, "\tARZG\t%d\n", p);
                 }
             }          
         ;
@@ -341,12 +346,12 @@ char categoria;
     indice
         :   
             {}
-        | T_INICIO_VETOR expr
+        | T_INICIO_VETOR expr T_FIM_VETOR
             {
-                printf("a%s", atomo);
+                printf("\nind -> %s", atomo);
+                
                 empilha(atoi(atomo));
             }
-          T_FIM_VETOR
         ;
     posicao
         : 
@@ -361,25 +366,32 @@ char categoria;
                 if(TabSimb[p].cat != 'a') {
                     erro("Variavel nao e um vetor");
                 }
+    
                 empilha(p);
             } T_FIM_VETOR
 
     termo
-        : T_IDENTIF indice
+        : T_IDENTIF
             {
-                printf("[%s]", atomo);
                 int pos = busca_simbolo(atomo);
                     if(pos == -1) { 
-                        printf("[%s]", atomo);
                         erro ("Variável não declarada!");  
                     }
-                
-                                   
-                //fprintf(yyout, "\tCRVV\t%d\n", TabSimb[pos].endereco);
-                fprintf(yyout, "\tCRVG\t%d\n", TabSimb[pos].endereco);   
-                
-                empilha(TabSimb[pos].tipo);  
+                empilha(pos);
+
             }
+        indice
+            {
+                desempilha2();
+                int pos = desempilha();
+                if(TabSimb[pos].cat == 'a'){
+                    fprintf(yyout, "\tCRVV\t%d\n", pos);
+                } else {
+                    fprintf(yyout, "\tCRVG\t%d\n", pos);
+                }
+
+                empilha(TabSimb[pos].tipo);  
+            }   
         | T_NUMERO
             { 
                 fprintf(yyout, "\tCRCT\t%s\n", atomo);    
@@ -444,6 +456,6 @@ int main (int argc, char *argv[]){
     yyout = fopen(nameOut, "wt");
 
     if(!yyparse()){
-        printf("Programa ok!\n");
+        printf("\nPrograma ok!\n");
     }
 }
