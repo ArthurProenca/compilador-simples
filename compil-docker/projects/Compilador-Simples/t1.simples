@@ -1,10 +1,19 @@
-programa teste
-  inteiro x a[5] b
+programa q3
+  inteiro a b x[3]
 inicio
-    leia x
-    b <- 777
-    a[0] <- 155
-    a[1] <- 2123
-    escreva a[0]
-    escreva a[1]
+  
+  a<-2
+  b<-3
+  x[0] <- 10
+  x[1] <- 20
+  x[2] <- 30
+  escreva a
+  escreva b
+  escreva x[0]
+  escreva x[1]
+  escreva x[2]
+  
+  x[2] <- 1
+  escreva x[2]
+
 fimprograma

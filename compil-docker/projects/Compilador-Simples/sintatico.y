@@ -149,7 +149,7 @@ char categoria;
                int pos = busca_simbolo(atomo);
                    if(pos == -1)
                        erro ("Variável não declarada!");       
-               fprintf(yyout, "\tARZG\t%d\n", TabSimb[pos].endereco);
+               fprintf(yyout, "\tARZG\t%d\n", pos);
             } indice
         ;
 
@@ -236,10 +236,8 @@ char categoria;
         : T_IDENTIF
             {    
                 int pos = busca_simbolo(atomo);
-                printf("%i", pos);
                     if(pos == -1)
                         erro ("Variável não declarada!");     
-
                 empilha(pos);
             }
             posicao T_ATRIB expr
@@ -249,7 +247,8 @@ char categoria;
                 
                 if(t != TabSimb[p].tipo)
                     erro("Incompatibilidade de tipos!");
-                
+
+                printf("%i", p);
 
                 if(TabSimb[p].cat == 97) {                   
                     fprintf(yyout, "\tARZV\t%d\n", p);
@@ -345,7 +344,10 @@ char categoria;
         ;
     indice
         :   
-            {}
+            {
+                printf("[%s]", atomo);
+                empilha(atoi(atomo));
+            }
         | T_INICIO_VETOR expr T_FIM_VETOR
             {
                 printf("\nind -> %s", atomo);
@@ -355,7 +357,10 @@ char categoria;
         ;
     posicao
         : 
-            {}
+            {
+                printf("%s", atomo);
+                empilha((busca_simbolo(atomo)));
+            }
         | T_INICIO_VETOR expr
             {
                 int t = desempilha();
@@ -366,28 +371,30 @@ char categoria;
                 if(TabSimb[p].cat != 'a') {
                     erro("Variavel nao e um vetor");
                 }
-    
                 empilha(p);
+            
             } T_FIM_VETOR
 
     termo
         : T_IDENTIF
             {
                 int pos = busca_simbolo(atomo);
-                    if(pos == -1) { 
+                    if(pos == -1) 
                         erro ("Variável não declarada!");  
-                    }
                 empilha(pos);
-
             }
         indice
             {
-                desempilha2();
+                desempilha();
+                int x = desempilha();
                 int pos = desempilha();
+                
+                printf("ind ps %i %i", pos, x);
+
                 if(TabSimb[pos].cat == 'a'){
                     fprintf(yyout, "\tCRVV\t%d\n", pos);
                 } else {
-                    fprintf(yyout, "\tCRVG\t%d\n", pos);
+                    fprintf(yyout, "\tCRVG\t%d\n", x);
                 }
 
                 empilha(TabSimb[pos].tipo);  
