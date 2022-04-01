@@ -1,19 +1,6 @@
 programa q3
-  inteiro a b x[3]
+  inteiro a y[2] b x[4]
 inicio
-  
-  a<-2
-  b<-3
-  x[0] <- 10
-  x[1] <- 20
-  x[2] <- 30
-  escreva a
-  escreva b
-  escreva x[0]
-  escreva x[1]
-  escreva x[2]
-  
-  x[2] <- 1
-  escreva x[2]
-
+  leia y[0]
+  escreva y[0]
 fimprograma

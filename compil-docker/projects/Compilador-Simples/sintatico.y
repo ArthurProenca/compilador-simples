@@ -145,11 +145,17 @@ char categoria;
     leitura
         : T_LEIA T_IDENTIF 
             { 
-               fprintf(yyout, "\tLEIA\n");
-               int pos = busca_simbolo(atomo);
-                   if(pos == -1)
-                       erro ("Variável não declarada!");       
-               fprintf(yyout, "\tARZG\t%d\n", pos);
+                fprintf(yyout, "\tLEIA\n");
+                int pos = busca_simbolo(atomo);
+                    if(pos == -1)
+                        erro ("Variável não declarada!");
+                
+                printf("%i", pos);
+                if(TabSimb[pos].cat == 'a'){
+                    fprintf(yyout, "\tARZV\t%d\n", TabSimb[pos].endereco);
+                } else {
+                    fprintf(yyout, "\tARZG\t%d\n", TabSimb[pos].endereco);
+                }
             } indice
         ;
 
@@ -248,13 +254,12 @@ char categoria;
                 if(t != TabSimb[p].tipo)
                     erro("Incompatibilidade de tipos!");
 
-                printf("%i", p);
-
-                if(TabSimb[p].cat == 97) {                   
-                    fprintf(yyout, "\tARZV\t%d\n", p);
+                if(TabSimb[p].cat == 97) {                
+                    fprintf(yyout, "\tARZV\t%d\n", TabSimb[p].endereco);
                 } else {
-                    fprintf(yyout, "\tARZG\t%d\n", p);
+                    fprintf(yyout, "\tARZG\t%d\n", TabSimb[p].endereco);
                 }
+
             }          
         ;
 
@@ -345,21 +350,17 @@ char categoria;
     indice
         :   
             {
-                printf("[%s]", atomo);
                 empilha(atoi(atomo));
             }
         | T_INICIO_VETOR expr T_FIM_VETOR
-            {
-                printf("\nind -> %s", atomo);
-                
+            {     
                 empilha(atoi(atomo));
             }
         ;
     posicao
         : 
             {
-                printf("%s", atomo);
-                empilha((busca_simbolo(atomo)));
+                empilha(busca_simbolo(atomo));
             }
         | T_INICIO_VETOR expr
             {
@@ -388,13 +389,11 @@ char categoria;
                 desempilha();
                 int x = desempilha();
                 int pos = desempilha();
-                
-                printf("ind ps %i %i", pos, x);
-
+            
                 if(TabSimb[pos].cat == 'a'){
-                    fprintf(yyout, "\tCRVV\t%d\n", pos);
+                    fprintf(yyout, "\tCRVV\t%d\n", TabSimb[pos].endereco);
                 } else {
-                    fprintf(yyout, "\tCRVG\t%d\n", x);
+                    fprintf(yyout, "\tCRVG\t%d\n", TabSimb[pos].endereco);
                 }
 
                 empilha(TabSimb[pos].tipo);  
