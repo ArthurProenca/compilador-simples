@@ -30,7 +30,7 @@ void mostraPilha()
 // Rotina de pilha
 void empilha(int valor)
 {
-    mostraPilha();
+    //mostraPilha();
     if (topo == TAM_PIL)
         erro("Pilha cheia!");
     Pilha[++topo] = valor;

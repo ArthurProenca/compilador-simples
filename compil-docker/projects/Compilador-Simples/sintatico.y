@@ -148,7 +148,7 @@ char categoria;
     leitura
         : T_LEIA T_IDENTIF 
             { 
-                fprintf(yyout, "\tLEIA\n");
+                
                 int pos = busca_simbolo(atomo);
                     if(pos == -1)
                         erro ("Variável não declarada!");
@@ -252,7 +252,9 @@ char categoria;
                 if(t != TabSimb[p].tipo)
                     erro("Incompatibilidade de tipos!");
 
-                if(TabSimb[p].cat == 97) {                
+                
+                if(TabSimb[p].cat == 97) {   
+                                 
                     fprintf(yyout, "\tARZV\t%d\n", TabSimb[p].endereco);
                 } else {
                     fprintf(yyout, "\tARZG\t%d\n", TabSimb[p].endereco);
@@ -346,16 +348,22 @@ char categoria;
         ;
     indice
         :   
-            {}
-        | T_INICIO_VETOR expr T_FIM_VETOR
-            {           
-                empilha(atoi(atomo));
+            {
+                int id = desempilha();
+                fprintf(yyout, "\tCRVG\t%d\n", TabSimb[id].endereco);
             }
+        | T_INICIO_VETOR expr
+            {         
+                desempilha();
+                int id =  desempilha();
+                fprintf(yyout, "\tCRVV\t%d\n", TabSimb[id].endereco);
+            } T_FIM_VETOR
         ;
     posicao
         : 
             {
                 int pos = desempilha();
+                fprintf(yyout, "\tLEIA\n");
                 fprintf(yyout, "\tARZG\t%d\n", TabSimb[pos].endereco); 
             }
         | T_INICIO_VETOR expr
@@ -369,6 +377,7 @@ char categoria;
                 if(TabSimb[p].cat != 'a') {
                     erro("Variavel nao e um vetor");
                 }
+                fprintf(yyout, "\tLEIA\n");
                 fprintf(yyout, "\tARZV\t%d\n", TabSimb[p].endereco);
             } T_FIM_VETOR
         ;
@@ -388,25 +397,19 @@ char categoria;
                     erro("Variavel nao e um vetor");
                 }
                 empilha(p);
-            } T_FIM_VETOR
+            } 
+            T_FIM_VETOR
         ;
     termo
-        : T_IDENTIF indice
+        : T_IDENTIF
             {
-                
                 int pos = busca_simbolo(atomo);
                     if(pos == -1)
                         erro ("Variável não declarada!");
-                
-                if(TabSimb[pos].cat == 'a')
-                {
-                    fprintf(yyout, "\tCRVV\t%d\n", TabSimb[pos].endereco);
-                } else {
-                    fprintf(yyout, "\tCRVG\t%d\n", TabSimb[pos].endereco);
-                }
-
-                empilha(atoi(atomo));
+                empilha(TabSimb[pos].tipo);	
+                empilha(pos);
             }
+            indice
         | T_NUMERO
             { 
                 fprintf(yyout, "\tCRCT\t%s\n", atomo);    

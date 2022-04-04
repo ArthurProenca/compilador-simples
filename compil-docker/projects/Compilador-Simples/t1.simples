@@ -1,9 +1,8 @@
 programa testavetor
-  inteiro i vetor[4] vet[2] x
+  inteiro x vetor[3] a
 inicio
-  leia i
-  leia vet[0]
-  vetor[1] <- 10
-  i <- 1
-  escreva i
+  leia x
+  a <- 1
+  vetor[a] <- x
+  escreva vetor[a]
 fimprograma
