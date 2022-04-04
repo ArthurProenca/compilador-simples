@@ -16,9 +16,21 @@ struct elem_tab_simbolos
 } TabSimb[TAM_TAB], elem_tab;
 int pos_tab;
 
+void mostraPilha()
+{
+    int aux = topo;
+    while( aux > 0 )
+    {
+        printf("%d\n", Pilha[aux]);
+        aux--;
+    }
+    printf("-+-+-+\n");
+}
+
 // Rotina de pilha
 void empilha(int valor)
 {
+    mostraPilha();
     if (topo == TAM_PIL)
         erro("Pilha cheia!");
     Pilha[++topo] = valor;

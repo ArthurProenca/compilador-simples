@@ -1,6 +1,9 @@
-programa q3
-  inteiro a y[2] b x[4]
+programa testavetor
+  inteiro i vetor[4] vet[2] x
 inicio
-  leia y[0]
-  escreva y[0]
+  leia i
+  leia vet[0]
+  vetor[1] <- 10
+  i <- 1
+  escreva i
 fimprograma
