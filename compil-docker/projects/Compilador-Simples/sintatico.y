@@ -417,12 +417,12 @@ char categoria;
             }
         | T_V
             { 
-                fprintf(yyout, "\tDISJ\t1\n");     
+                fprintf(yyout, "\tCRCT\t1\n");     
                 empilha('l');
             }
         | T_F
             { 
-                fprintf(yyout, "\tDISJ\t0\n");     
+                fprintf(yyout, "\tCRCT\t0\n");     
                 empilha('l');
             }
         | T_NAO termo

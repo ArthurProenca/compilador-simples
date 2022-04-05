@@ -1872,7 +1872,7 @@ yyreduce:
   case 62:
 #line 419 "sintatico.y"
             { 
-                fprintf(yyout, "\tDISJ\t1\n");     
+                fprintf(yyout, "\tCRCT\t1\n");     
                 empilha('l');
             }
 #line 1879 "sintatico.c"
@@ -1881,7 +1881,7 @@ yyreduce:
   case 63:
 #line 424 "sintatico.y"
             { 
-                fprintf(yyout, "\tDISJ\t0\n");     
+                fprintf(yyout, "\tCRCT\t0\n");     
                 empilha('l');
             }
 #line 1888 "sintatico.c"
