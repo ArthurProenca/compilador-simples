@@ -1,4 +1,15 @@
 %{
+/*+--------------------------------------------------------------------
+  |             UNIFAL − Universidade Federal de Alfenas
+  |              Bacharelado em Ciência da Computação
+  |  Trabalho..: Vetor e verificação de tipos
+  |  Disciplina: Teoria de Linguagens e Compiladores
+  |  Professor.: Luiz Eduardo da Silva
+  |  Aluno.....: Arthur Rodrigues Proença
+  |  Data......: 06/04/2022
+  +----------------------------------------------------------------------*/
+%}
+%{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
