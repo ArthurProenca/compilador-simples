@@ -7,5 +7,7 @@ Docker instalado e configurado corretamente
 # Uso
 Para executar o compilador, basta executar o comando:
 ```
+./simples [nome arquivo.simples]
+```
 
 
